@@ -1,0 +1,49 @@
+{
+    "name": "killer-backend",
+    "version": "0.1.0",
+    "description": "Backed software of Killer",
+    "main": "src/server.ts",
+    "scripts": {
+        "type-check": "tsc --noEmit",
+        "type-check:watch": "npm run type-check -- --watch",
+        "build": "npm run build:types && npm run build:js",
+        "build:types": "tsc --emitDeclarationOnly",
+        "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
+        "start": "npm run build && node lib/server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Syndicat-Extremiste-Logiciel/killer-backend.git"
+    },
+    "author": "B. Debotte, N. Patry, R. Couanon",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Syndicat-Extremiste-Logiciel/killer-backend/issues"
+    },
+    "homepage": "https://github.com/Syndicat-Extremiste-Logiciel/killer-backend#readme",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "compression": "^1.7.4",
+        "cookie-parser": "^1.4.5",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "nodemon": "^2.0.2",
+        "socket.io": "^2.3.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.8.4",
+        "@babel/core": "^7.9.0",
+        "@babel/node": "^7.8.7",
+        "@babel/preset-env": "^7.9.0",
+        "@babel/preset-typescript": "^7.9.0",
+        "@types/body-parser": "^1.19.0",
+        "@types/compression": "^1.7.0",
+        "@types/cookie-parser": "^1.4.2",
+        "@types/cors": "^2.8.6",
+        "@types/express": "^4.17.3",
+        "@types/node": "^13.9.5",
+        "@types/socket.io": "^2.1.4",
+        "tslint": "^6.1.0",
+        "typescript": "^3.8.3"
+    }
+}
