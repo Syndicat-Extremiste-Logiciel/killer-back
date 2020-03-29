@@ -1,18 +1,18 @@
 import express from 'express';
-import cors from 'cors';
-import compression from 'compression';
+import path from 'path';
+import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import routes from './routes/index';
 
-const app = express();
+var app = express();;
 
-app.set('trust proxy', 'loopback');
 
-app.use(cors());
-app.use(compression());
-app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
+app.use('/', routes);
 
 export default app;

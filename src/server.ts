@@ -1,14 +1,100 @@
+
+/**
+ * Module dependencies.
+ */
 import app from './app';
-import io from 'socket.io';
+import http from 'http';
+import Socket from "./socket";
 
-const PORT = parseInt(process.env.PORT || '5000');
-const HOST = process.env.HOSTNAME || '0.0.0.0';
+const debug = require('debug')('<%- name %>:server');
 
-let server = app.listen(PORT, HOST, () => {
-    console.log(`🚀  Server ready at http://${HOST}:${PORT}`);
-});
+/**
+ * Get port from environment and store in Express.
+ */
+const port = normalizePort(process.env.PORT || '5000');
+app.set('port', port);
 
-const socket = io(server);
-socket.on('connection', () => {
-    /* Some logic */
-});
+
+/**
+ * Create HTTP server.
+ */
+const server = http.createServer(app);
+
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/* Create Socket */
+const socket = new Socket(server);
+socket.listen();
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val: any) {
+    var port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+function onError(error: any) {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    var bind = typeof port === 'string' ?
+        'Pipe ' + port :
+        'Port ' + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+        default:
+            throw error;
+    }
+}
+
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+function onListening() {
+    const addr = server.address();
+
+    if(!addr) {
+        debug("addr is not defined.");
+        console.error("addr is not defined.");
+        process.exit(1);
+    }
+
+    const bind = typeof addr === 'string' ?
+        'pipe ' + addr :
+        'port ' + addr.port;
+        debug('🚀  Server ready at ' + bind);
+        console.log('🚀  Server ready at ' + bind);
+}
+
+export default server;
